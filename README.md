@@ -1,5 +1,7 @@
 # SSH brute-force analyzer
 
+![imgs/capture.png](imgs/capture.png)
+
 If you leave a server open with an public IP, there will be get many SSH brute force login attacks.
 I thought that analyzing this log will give an interesting insight,
 so I wrote a script that parses the output of the `lastb` command and stores it into a sqlite database.
