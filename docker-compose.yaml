@@ -1,0 +1,8 @@
+version: "3"
+services:
+  logger:
+    build: .
+    volumes:
+      - ./out:/out
+      - /var/log/btmp:/var/log/btmp:ro
+    restart: always
