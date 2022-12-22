@@ -12,5 +12,5 @@ services:
     volumes:
       - ./out:/out
     ports:
-      - 2222:22
+      - "2222:22"
     restart: always
