@@ -1,8 +1,16 @@
 version: "3"
 services:
-  logger:
-    build: .
+  btmp-logger:
+    build: src-btmp
     volumes:
       - ./out:/out
       - /var/log/btmp:/var/log/btmp:ro
+    restart: always
+
+  ssh-logger:
+    build: src-ssh
+    volumes:
+      - ./out:/out
+    ports:
+      - 2222:22
     restart: always
