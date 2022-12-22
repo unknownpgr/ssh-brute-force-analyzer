@@ -20,12 +20,11 @@ class Server(paramiko.ServerInterface):
         self.log_queue.put((username, password, ip, port, timestamp))
 
     def check_auth_password(self, username: str, password: str) -> int:
-        print(username, password)
+        self._log(username, password)
         return super().check_auth_password(username, password)
 
 
 def listener(client, log_queue, addr):
-    print(addr)
     transport = paramiko.Transport(client)
     transport.set_gss_host(socket.getfqdn(""))
     transport.load_server_moduli()
@@ -48,9 +47,10 @@ def logger(log_queue: queue.Queue):
         print("Skip table creation")
 
     while True:
-        (username, password, ip, port, timestamp) = log_queue.get()
+        log = log_queue.get()
+        print(log)
         cur.execute('INSERT INTO ssh VALUES (?,?,?,?,?)',
-                    (username, password, ip, port, timestamp))
+                    log)
         con.commit()
 
 
@@ -68,7 +68,7 @@ def main():
     while True:
         client, addr = sock.accept()
         listener_thread = threading.Thread(
-            target=listener, args=[client, addr])
+            target=listener, args=[client, log_queue, addr])
         listener_thread.start()
 
 
