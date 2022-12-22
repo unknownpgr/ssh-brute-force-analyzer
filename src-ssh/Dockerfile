@@ -1,10 +1,10 @@
 FROM python:3.8
 
-RUN pip install utmp
+RUN pip install paramiko
 
 WORKDIR /app
 
-ADD src/ ./
+ADD ./ ./
 
 RUN mkdir /out
 
