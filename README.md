@@ -4,16 +4,20 @@
 
 If you leave a server open with an public IP, there will be many SSH brute force login attacks.
 I thought that analyzing this log will give an interesting insight,
-so I wrote a script that parses the output of the `lastb` command and stores it into a sqlite database.
+so I wrote two scripts for analyzing ssh brute-force attacks.
+
+- `src-btmp/main.py` parses the output of the `lastb` command and stores it into a sqlite database.
+- `src-ssh/main.py` opens fake ssh server and record attacks, including source ip address, port, username and even tried password.
 
 ## Requirements
 
 - docker
+- docker-compose
 
 ## Usage
 
-- run `run.sh` script. It will create `out/btmp-log.db` sqlite3 database file.
-- It will be updated for every 10 minutes.
+- run `run.sh` script. It will build docker images and run them via docker-compose.
+- Fake ssh server will be opened at port 2222. This configuration can be changed by modifying `docker-compose.yaml`.
 
 Refer to `reader.py` file for log analyzing examples.
 

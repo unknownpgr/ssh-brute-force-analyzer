@@ -31,3 +31,13 @@ cur.execute(
 print('IPs:')
 print('\n'.join(map(str, cur.fetchall())))
 print()
+
+con.close()
+
+con = sqlite3.connect('out/ssh-log.db')
+cur = con.cursor()
+cur.execute(
+    'SELECT * FROM ssh')
+print('Attacks:')
+print('\n'.join(map(str, cur.fetchall())))
+print()
