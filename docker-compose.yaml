@@ -6,6 +6,10 @@ services:
       - ./out:/out
       - /var/log/btmp:/var/log/btmp:ro
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
 
   ssh-logger:
     build: src-ssh
@@ -14,3 +18,7 @@ services:
     ports:
       - "2222:22"
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
