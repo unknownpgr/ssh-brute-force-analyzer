@@ -8,4 +8,4 @@ ADD ./ ./
 
 RUN mkdir /out
 
-ENTRYPOINT [ "python", "main.py" ]
+ENTRYPOINT [ "sh", "init.sh" ]

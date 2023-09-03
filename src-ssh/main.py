@@ -16,7 +16,7 @@ class Server(paramiko.ServerInterface):
 
     def _log(self, username, password):
         ip, port = self.addr
-        timestamp = int(datetime.now().timestamp()*1000)
+        timestamp = int(datetime.now().timestamp() * 1000)
         self.log_queue.put((username, password, ip, port, timestamp))
 
     def check_auth_password(self, username: str, password: str) -> int:
@@ -28,7 +28,7 @@ def listener(client, log_queue, addr):
     transport = paramiko.Transport(client)
     transport.set_gss_host(socket.getfqdn(""))
     transport.load_server_moduli()
-    transport.add_server_key(paramiko.RSAKey(filename='./id_rsa'))
+    transport.add_server_key(paramiko.RSAKey(filename="./id_rsa"))
     server = Server(addr, log_queue)
     transport.start_server(server=server)
     server.event.wait(30)
@@ -36,21 +36,21 @@ def listener(client, log_queue, addr):
 
 
 def logger(log_queue: queue.Queue):
-    con = sqlite3.connect('/out/ssh-log.db')
+    con = sqlite3.connect("/out/ssh-log.db")
     cur = con.cursor()
     try:
         cur.execute(
-            'CREATE TABLE ssh (name text, password text, ip text, port int, timestamp int)')
+            "CREATE TABLE ssh (name text, password text, ip text, port int, timestamp int)"
+        )
         con.commit()
-        print('Table created.')
+        print("Table created.")
     except:
         print("Skip table creation")
 
     while True:
         log = log_queue.get()
-        print(log)
-        cur.execute('INSERT INTO ssh VALUES (?,?,?,?,?)',
-                    log)
+        print(log, flush=True)
+        cur.execute("INSERT INTO ssh VALUES (?,?,?,?,?)", log)
         con.commit()
 
 
@@ -62,13 +62,14 @@ def main():
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(('', 22))
+    sock.bind(("", 22))
     sock.listen(100)
 
     while True:
         client, addr = sock.accept()
         listener_thread = threading.Thread(
-            target=listener, args=[client, log_queue, addr])
+            target=listener, args=[client, log_queue, addr]
+        )
         listener_thread.start()
 
 
